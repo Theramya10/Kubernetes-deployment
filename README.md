@@ -1,4 +1,4 @@
-# 🚀 MY-API — Docker & CI/CD Practice
+# 🚀 MY-API — Kubernets-Deployment & CI/CD Practice
 
 A production-style Node.js REST API project created to practice **containerization, Git workflows, and Continuous Integration (CI)** using Docker and GitHub Actions.
 
