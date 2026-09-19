@@ -3,47 +3,45 @@ name: DevSecOps CI Pipeline
 on:
   push:
     branches:
-    - main
-    - develop
+      - main
+      - develop
   pull_request:
     branches:
       - main
       - devlop
-  
-    jobs:
-      security-scan:
-        name: Lint, Build and Scan
-        runs-on: ubuntu-latest
-    
-        steps:
 
-          - name: Checkout source code
-            uses: actions/checkout@v4
+jobs:
+  security-scan:
+    name: Lint, Build and Scan
+    runs-on: ubuntu-latest
 
-          - name: Dockerfile lint
-            uses: hadolint/hadolint-action@v3.1.0
-            with:
-              dockerfile: Dockerfile
-              failure-threshold: warning
-    
-          - name: Set up Docker Buildx
-            uses: docker/setup-buildx-action@v3
-    
-          - name: Build Docker image
-            uses: docker/build-push-action@v6
-            with:
-              context: .
-              load: true
-              tags: devops-api:${{ github.sha }}
-    
-          - name: Trivy vulnerability scan
-            uses: aquasecurity/trivy-action@0.28.0
-            with:
-              image-ref: devops-api:${{ github.sha }}
-              scan-type: image
-              format: table
-              exit-code: '1'
-              ignore-unfixed: true
-              vuln-type: os,library
-              severity: CRITICAL
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
 
+      - name: Dockerfile lint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          failure-threshold: warning
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: devops-api:${{ github.sha }}
+
+      - name: Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: devops-api:${{ github.sha }}
+          scan-type: 'image'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL'
