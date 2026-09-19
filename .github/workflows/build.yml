@@ -8,7 +8,7 @@ on:
   pull_request:
     branches:
       - main
-      - devlop
+      - develop
 
 jobs:
   security-scan:
@@ -36,7 +36,7 @@ jobs:
           tags: devops-api:${{ github.sha }}
 
       - name: Trivy vulnerability scan
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.29.0
         with:
           image-ref: devops-api:${{ github.sha }}
           scan-type: 'image'
